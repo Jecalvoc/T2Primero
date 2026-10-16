@@ -634,6 +634,21 @@ body {
   color: #7bed9f;
 }
 
+/* Mission badge for drawing challenges */
+.mission-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 6px;
+}
+
+.mission-badge.tool { background: rgba(245, 166, 35, 0.3); color: #f5a623; }
+.mission-badge.drawing { background: rgba(233, 69, 96, 0.3); color: #e94560; }
+
 /* Progress Bar */
 .progress-section {
   background: rgba(255,255,255,0.05);
@@ -1153,7 +1168,7 @@ body {
       <div class="progress-bar-container">
         <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
       </div>
-      <div class="progress-text" id="progressText">0 de 8 retos completados</div>
+      <div class="progress-text" id="progressText">0 de 16 retos completados</div>
     </div>
 
     <div class="mode-selector">
@@ -1229,14 +1244,89 @@ const colors = [
 
 // ============ CHALLENGES ============
 const challenges = [
-  { id: 1, title: 'Trazo con Lápiz', desc: 'Selecciona la herramienta Lápiz ✏️ y dibuja una línea libre en el canvas.', tool: 'pencil', icon: '✏️', check: () => toolsUsedInSession.has('pencil') },
-  { id: 2, title: 'Pincel Grueso', desc: 'Usa el Pincel 🖌️ con un tamaño mayor a 10px para pintar una zona del dibujo.', tool: 'brush', icon: '🖌️', check: () => toolsUsedInSession.has('brush') && brushSize > 10 },
-  { id: 3, title: 'Forma Geométrica', desc: 'Dibuja un Rectángulo ⬜ o Círculo ⭕ usando la herramienta de formas.', tool: 'rect', icon: '⬜', check: () => toolsUsedInSession.has('rect') || toolsUsedInSession.has('circle') },
-  { id: 4, title: 'Relleno de Color', desc: 'Usa la herramienta Relleno 🪣 (balde) para colorear un área cerrada del dibujo.', tool: 'fill', icon: '🪣', check: () => toolsUsedInSession.has('fill') },
-  { id: 5, title: 'Efecto Spray', desc: 'Aplica la herramienta Spray 💨 para crear un efecto de textura o difuminado.', tool: 'spray', icon: '💨', check: () => toolsUsedInSession.has('spray') },
-  { id: 6, title: 'Línea y Triángulo', desc: 'Dibuja una Línea 📏 y un Triángulo 🔺 para agregar estructura al dibujo.', tool: 'line', icon: '📏', check: () => toolsUsedInSession.has('line') && toolsUsedInSession.has('triangle') },
-  { id: 7, title: 'Insertar Texto', desc: 'Usa la herramienta Texto 🔤 para agregar un título o etiqueta a tu obra.', tool: 'text', icon: '🔤', check: () => toolsUsedInSession.has('text') },
-  { id: 8, title: 'Estrella Decorativa', desc: 'Agrega una Estrella ⭐ decorativa para embellecer tu presentación final.', tool: 'star', icon: '⭐', check: () => toolsUsedInSession.has('star') }
+  // Herramientas básicas (8 originales)
+  { id: 1, title: 'Trazo con Lápiz', desc: 'Selecciona la herramienta Lápiz ✏️ y dibuja una línea libre en el canvas.', tool: 'pencil', icon: '✏️', type: 'tool', check: () => toolsUsedInSession.has('pencil') },
+  { id: 2, title: 'Pincel Grueso', desc: 'Usa el Pincel 🖌️ con un tamaño mayor a 10px para pintar una zona del dibujo.', tool: 'brush', icon: '🖌️', type: 'tool', check: () => toolsUsedInSession.has('brush') && brushSize > 10 },
+  { id: 3, title: 'Forma Geométrica', desc: 'Dibuja un Rectángulo ⬜ o Círculo ⭕ usando la herramienta de formas.', tool: 'rect', icon: '⬜', type: 'tool', check: () => toolsUsedInSession.has('rect') || toolsUsedInSession.has('circle') },
+  { id: 4, title: 'Relleno de Color', desc: 'Usa la herramienta Relleno 🪣 (balde) para colorear un área cerrada del dibujo.', tool: 'fill', icon: '🪣', type: 'tool', check: () => toolsUsedInSession.has('fill') },
+  { id: 5, title: 'Efecto Spray', desc: 'Aplica la herramienta Spray 💨 para crear un efecto de textura o difuminado.', tool: 'spray', icon: '💨', type: 'tool', check: () => toolsUsedInSession.has('spray') },
+  { id: 6, title: 'Línea y Triángulo', desc: 'Dibuja una Línea 📏 y un Triángulo 🔺 para agregar estructura al dibujo.', tool: 'line', icon: '📏', type: 'tool', check: () => toolsUsedInSession.has('line') && toolsUsedInSession.has('triangle') },
+  { id: 7, title: 'Insertar Texto', desc: 'Usa la herramienta Texto 🔤 para agregar un título o etiqueta a tu obra.', tool: 'text', icon: '🔤', type: 'tool', check: () => toolsUsedInSession.has('text') },
+  { id: 8, title: 'Estrella Decorativa', desc: 'Agrega una Estrella ⭐ decorativa para embellecer tu presentación final.', tool: 'star', icon: '⭐', type: 'tool', check: () => toolsUsedInSession.has('star') },
+  
+  // Nuevas misiones de dibujo para niños (8 nuevas)
+  { 
+    id: 9, 
+    title: '🏠 Dibuja una Casa', 
+    desc: '¡Construye tu casita! Usa un Rectángulo ⬜ para la casa y un Triángulo 🔺 para el techo. ¡No olvides agregar una puerta!', 
+    tool: 'rect', 
+    icon: '🏠', 
+    type: 'drawing',
+    check: () => toolsUsedInSession.has('rect') && toolsUsedInSession.has('triangle')
+  },
+  { 
+    id: 10, 
+    title: '☀️ Dibuja un Sol', 
+    desc: '¡Ilumina tu dibujo! Dibuja un Círculo ⭕ amarillo y usa Líneas 📏 para hacer los rayos del sol.', 
+    tool: 'circle', 
+    icon: '☀️', 
+    type: 'drawing',
+    check: () => toolsUsedInSession.has('circle') && toolsUsedInSession.has('line')
+  },
+  { 
+    id: 11, 
+    title: '🌳 Dibuja un Árbol', 
+    desc: '¡Planta un árbol! Usa un Rectángulo ⬜ marrón para el tronco y un Círculo ⭕ verde para las hojas.', 
+    tool: 'rect', 
+    icon: '🌳', 
+    type: 'drawing',
+    check: () => toolsUsedInSession.has('rect') && toolsUsedInSession.has('circle')
+  },
+  { 
+    id: 12, 
+    title: '🌸 Dibuja una Flor', 
+    desc: '¡Crea una flor hermosa! Dibuja un Círculo ⭕ amarillo en el centro y varios círculos pequeños de colores para los pétalos.', 
+    tool: 'circle', 
+    icon: '🌸', 
+    type: 'drawing',
+    check: () => toolsUsedInSession.has('circle') && toolsUsedInSession.has('fill')
+  },
+  { 
+    id: 13, 
+    title: '🐟 Dibuja un Pez', 
+    desc: '¡Nada en el mar! Usa el Lápiz ✏️ o Pincel 🖌️ para dibujar un pez con forma ovalada y una cola triangular.', 
+    tool: 'brush', 
+    icon: '🐟', 
+    type: 'drawing',
+    check: () => (toolsUsedInSession.has('pencil') || toolsUsedInSession.has('brush')) && toolsUsedInSession.has('triangle')
+  },
+  { 
+    id: 14, 
+    title: '🦋 Dibuja una Mariposa', 
+    desc: '¡Vuela alto! Dibuja dos círculos grandes para las alas y un rectángulo pequeño para el cuerpo. ¡Usa colores brillantes!', 
+    tool: 'circle', 
+    icon: '🦋', 
+    type: 'drawing',
+    check: () => toolsUsedInSession.has('circle') && toolsUsedInSession.has('rect') && toolsUsedInSession.has('fill')
+  },
+  { 
+    id: 15, 
+    title: '🌈 Dibuja un Arcoíris', 
+    desc: '¡Pinta el cielo! Usa varias Líneas 📏 curvas o Círculos ⭕ grandes de diferentes colores para crear un arcoíris.', 
+    tool: 'line', 
+    icon: '🌈', 
+    type: 'drawing',
+    check: () => toolsUsedInSession.has('line') || (toolsUsedInSession.has('circle') && toolsUsedInSession.has('spray'))
+  },
+  { 
+    id: 16, 
+    title: '😊 Dibuja una Cara Feliz', 
+    desc: '¡Sonríe! Dibuja un Círculo ⭕ grande para la cara, dos círculos pequeños para los ojos y una línea curva para la sonrisa.', 
+    tool: 'circle', 
+    icon: '😊', 
+    type: 'drawing',
+    check: () => toolsUsedInSession.has('circle') && (toolsUsedInSession.has('pencil') || toolsUsedInSession.has('brush'))
+  }
 ];
 
 // ============ INIT ============
@@ -1377,7 +1467,6 @@ function saveAs(format) {
 }
 
 function exportAsSVG(filename) {
-  // Convert canvas to embedded SVG image
   const dataURL = canvas.toDataURL('image/png');
   const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
@@ -1428,7 +1517,6 @@ function toggleAutoSave() {
   if (autoSaveEnabled) {
     autoSaveInterval = setInterval(() => {
       if (isDirty) {
-        // Save to localStorage
         localStorage.setItem('paint_autosave', canvas.toDataURL());
         localStorage.setItem('paint_autosave_time', new Date().toISOString());
         lastSaveTime = new Date();
@@ -1810,10 +1898,14 @@ function renderChallenges() {
     const isActive = !completed && (completedChallenges.size === ch.id - 1 || mode === 'free');
     const card = document.createElement('div');
     card.className = 'challenge-card' + (isActive ? ' active-challenge' : '') + (completed ? ' completed-challenge' : '');
+    
+    const badgeClass = ch.type === 'drawing' ? 'drawing' : 'tool';
+    const badgeText = ch.type === 'drawing' ? '🎨 Misión' : '🔧 Herramienta';
+    
     card.innerHTML = `
       <div class="challenge-header">
         <div class="challenge-number">${completed ? '✓' : ch.id}</div>
-        <div class="challenge-title">${ch.icon} ${ch.title}</div>
+        <div class="challenge-title">${ch.icon} ${ch.title} <span class="mission-badge ${badgeClass}">${badgeText}</span></div>
       </div>
       <div class="challenge-desc">${ch.desc}</div>
       <div class="challenge-tool-hint">🔧 Herramienta: ${ch.tool}</div>
@@ -1829,9 +1921,10 @@ function checkChallenges() {
   challenges.forEach(ch => {
     if (!completedChallenges.has(ch.id) && ch.check()) {
       completedChallenges.add(ch.id);
-      score += 100;
+      score += ch.type === 'drawing' ? 150 : 100; // Más puntos por misiones de dibujo
       newCompletion = true;
-      showNotification(`✅ ¡Reto completado: ${ch.title}! +100 pts`);
+      const points = ch.type === 'drawing' ? 150 : 100;
+      showNotification(`✅ ¡${ch.title} completado! +${points} pts`);
     }
   });
 
@@ -1842,7 +1935,7 @@ function checkChallenges() {
 
     if (completedChallenges.size === challenges.length) {
       setTimeout(() => {
-        showNotification('🏆 ¡TODOS LOS RETOS COMPLETADOS! Puedes ver tu presentación.');
+        showNotification('🏆 ¡TODAS LAS MISIONES COMPLETADAS! ¡Eres un artista experto!');
       }, 1000);
     }
   }
@@ -1895,7 +1988,7 @@ function showPresentation() {
       </div>
       <div style="background:rgba(255,255,255,0.08);padding:10px 18px;border-radius:10px;">
         <div style="font-size:1.4rem;font-weight:700;color:#7bed9f;">${completedChallenges.size}/${challenges.length}</div>
-        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Retos</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Misiones</div>
       </div>
       <div style="background:rgba(255,255,255,0.08);padding:10px 18px;border-radius:10px;">
         <div style="font-size:1.4rem;font-weight:700;color:#e94560;">${toolsUsed}/${totalTools}</div>
